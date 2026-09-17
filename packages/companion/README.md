@@ -1,7 +1,11 @@
-# @liangai/pulpo-companion — 跨渠道派活的 MCP 伴生
+# @liangai/pulpo-companion — 跨渠道派活的 MCP 伴生 · cross-channel delegation MCP companion
 
 一个 **stdio MCP 服务器**。core 在开会话时把它注入进各渠道 agent 的会话里，于是那个 agent
 多出五个工具：看有哪些渠道、把子任务派给别的渠道、给派出去的任务补话、查结论、撤销。
+
+A **stdio MCP server**. When core opens a session it injects the companion into that channel
+agent's session, giving the agent five more tools: see which channels exist, delegate a subtask
+to another channel, add input to a delegated task, read its conclusion, and cancel it.
 
 ```
 agent 会话 ──MCP stdio──▶ pulpo-companion ──JSON-RPC over unix socket──▶ pulpo-core
@@ -58,6 +62,9 @@ companion 第一次用到身份时换。令牌认不出来时工具直接报错�
 
 ## 运行
 
+它在 npm 上（`npm i @liangai/pulpo-companion`），但实际由 core 通过 `PULPO_COMPANION_BIN`
+拉起，一般不手工装；从源码构建则 `pnpm --filter @liangai/pulpo-companion build`。
+
 ```bash
 pulpo-companion          # stdio MCP 服务器，由 MCP 客户端拉起
 pulpo-companion --help
@@ -95,3 +102,121 @@ pnpm --filter @liangai/pulpo-companion test
   `list_agents → delegate_to_agent(model_id + thinking_effort) → get_task 轮询到 done →
   send_input → cancel_task`；以被派活会话身份再派活的熔断；以及**端到端注入**——让模型自己调
   `list_agents`，从转录里核对那次工具调用与它的返回。
+
+## English
+
+`@liangai/pulpo-companion` is a **stdio MCP server**. When core opens a session it injects the
+companion into that channel agent's session, giving the agent five more tools: see which channels
+exist, delegate a subtask to another channel, add input to a delegated task, read its conclusion,
+and cancel it.
+
+```
+agent session ──MCP stdio──▶ pulpo-companion ──JSON-RPC over unix socket──▶ pulpo-core
+                                                                            └─ task/* delivery/*
+```
+
+The companion **holds no state, starts no agent and stores no transcript of its own**: every tool
+lands on a core method (the contract is
+[PROTOCOL.md](https://github.com/Liang-HZ/pulpo/blob/main/packages/core/PROTOCOL.md)). The
+one-level breaker is decided in core too; the companion's only job is to report truthfully
+"who I am".
+
+### Tools
+
+| Tool | Arguments | Returns |
+|---|---|---|
+| `list_agents` | none | `{ caller, agents: [{ agent_type, label, current_model_id, current_thinking_effort, available_models[{model_id,label,efforts,default_effort,total_context_tokens}], available_efforts, delivery, descriptor_available }] }` |
+| `delegate_to_agent` | `agent_type`, `task`, `working_dir?`, `model_id?`, `thinking_effort?`, `delivery?` | `{ task_id, session_ref, capability_ref, caller, working_dir }` |
+| `send_input` | `task_id?` \| `session_ref?` (exactly one), `message`, `delivery?` | `{ outcome, tier, requested_tier, attempts, turn_active, session_ref, attribution, caller }` |
+| `get_task` | `task_id` | `{ task_id, status, summary, summary_source, session_ref, agent_type, model_id, thinking_effort, stop_reason, working_dir, caller }` |
+| `cancel_task` | `task_id` | `{ ok, reason? }` |
+
+`delivery` is an object: `tier` / `max_tier` (`native` \| `extension` \| `concurrent` \|
+`soft-interrupt` \| `queue`), `allow_interrupt`, `start_turn_if_idle`. A tier can only be pushed
+toward the conservative end, never raised — the capability is the target agent's own to declare.
+For the meaning of the receipt enum `injected` / `queued` / `no_active_turn` / `completed_race` /
+`unsupported`, see
+[PROTOCOL.md](https://github.com/Liang-HZ/pulpo/blob/main/packages/core/PROTOCOL.md) §4.6.
+
+A tool returns one JSON text; on error `isError=true` and the body carries core's error code and
+message.
+
+**Where values come from**: `agent_type` comes from `list_agents`; `model_id` /
+`thinking_effort` come from that same result's `available_models` / `available_efforts` for that
+channel (model ids are the channel's own spelling and may contain non-ASCII characters — **pass
+them back verbatim**). Give the target a value it does not recognise and core answers `-32602` on
+the spot; it never silently falls back to a default.
+
+**Attribution**: a message sent by `send_input` carries the prefix
+`[来自派活方 <agent_type>:<session_ref>]` (when a human calls the companion directly it is
+`[来自派活方 human:直接调用 companion]`), followed by a newline and the body — the target agent
+sees in its own native UI who added the message.
+
+**One-level limit**: a session that was itself delegated is refused by core if it calls
+`delegate_to_agent` again, with `code: -32003` and `legacyExitCode: 3` in the error. An agent's
+own native subagents are unaffected.
+
+### Caller identity
+
+| Source | Behaviour |
+|---|---|
+| `PULPO_SESSION_REF=<agentId>#<sessionId>` | reported directly to core as the callerRef |
+| `PULPO_SESSION_TOKEN=<uuid>` (given by core at injection time) | exchanged via `companion/identify` for the sessionRef |
+| neither | a human calling directly: delegation is allowed and every receipt says `caller: "human"` |
+
+Core injects the companion **before the `session/new` request goes out** — at that moment the
+session id does not exist yet, so what gets injected is a one-time token rather than a sessionRef;
+once core has the sessionId it records `token → sessionRef`, and the companion exchanges the
+token the first time it needs its identity. If the token is not recognised the tool errors
+outright and **never degrades to human** (otherwise the one-level breaker could be bypassed).
+
+### Running
+
+It is on npm (`npm i @liangai/pulpo-companion`), but core normally launches it through
+`PULPO_COMPANION_BIN`; installing it by hand is unusual. From this repo's source,
+`pnpm --filter @liangai/pulpo-companion build` builds it.
+
+```bash
+pulpo-companion          # stdio MCP server, launched by an MCP client
+pulpo-companion --help
+```
+
+| Environment variable | Meaning |
+|---|---|
+| `PULPO_HOME` | core's state root (default `~/.pulpo`); the socket is `$PULPO_HOME/run/core.sock` |
+| `PULPO_SOCKET` | full override of core's unix socket path |
+| `PULPO_CORE_WS` | core's WebSocket port (the fallback when core runs with `--no-socket`) |
+| `PULPO_SESSION_REF` / `PULPO_SESSION_TOKEN` | caller identity, see above |
+| `PULPO_DEFAULT_CWD` | fallback for `working_dir` when delegating (the process cwd is the fallback of last resort) |
+
+The core-side switches are `PULPO_COMPANION=off` (turn injection off) and `PULPO_COMPANION_BIN`
+(point at its bin path).
+
+### Observed behaviour (learned the hard way)
+
+- **Engines ask for permission for MCP tool calls.** Before calling `mcp__pulpo__list_agents`,
+  the ZCode engine sends `session/request_permission`; with no client answering, core settles it
+  as a default deny (5-minute timeout by default) and that tool call fails. The shell (or a test)
+  must really adjudicate these requests.
+- **Engines name MCP tools `mcp__<server>__<tool>`**; later `tool_call_update` notifications only
+  carry `toolCallId` and never repeat the tool name — the fragments of one call must be gathered
+  by id.
+- **`get_task`'s summary does not pad.** It prefers the conclusion in core's task registry (the
+  agent text of the target turn); if that is empty and the turn has ended, it reads through to the
+  target session for the latest agent text; if there still is none it honestly stays empty and
+  says why.
+
+### Tests
+
+```bash
+pnpm --filter @liangai/pulpo-companion test
+```
+
+- Unit (20): tool list and schemas, argument validation, identity resolution
+  (`PULPO_SESSION_REF` / token / human), attribution, breaker error surfacing, the three summary
+  sources. Uses a fake core; runs in seconds.
+- Integration (12, real core + real ZCode engine + real model):
+  `list_agents → delegate_to_agent(model_id + thinking_effort) → poll get_task to done →
+  send_input → cancel_task`; the breaker when a delegated session delegates again; and
+  **end-to-end injection** — let the model itself call `list_agents` and check that tool call and
+  its return in the transcript.

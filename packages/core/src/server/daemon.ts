@@ -131,7 +131,7 @@ export class PulpoDaemon extends EventEmitter {
       descriptors: this.descriptors,
       turns: this.turns,
       env: this.env,
-      version: opts.version ?? "0.1.0",
+      version: opts.version ?? "0.1.1",
       transports: () => ({ socketPath: this.resolvedSocketPath, wsPort: this.httpPort }),
       shutdown: () => this.stop(),
     });

@@ -1,6 +1,6 @@
 {
   "name": "@liangai/pulpo-companion",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "pulpo companion — stdio MCP server injected into agent sessions, exposing cross-channel delegation (delegate_to_agent / send_input / get_task / cancel_task) and list_agents.",
   "license": "Apache-2.0",

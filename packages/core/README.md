@@ -18,6 +18,13 @@ JSON-RPC 2.0 method table.
 the full method table, notifications, error codes and worked examples. It is the only document a
 client needs.
 
+## Install
+
+```bash
+npm i -g @liangai/pulpo-core        # the `pulpo-core` daemon + CLI
+npm i @liangai/pulpo-core           # ...or as a library
+```
+
 ## Run
 
 ```bash
@@ -43,7 +50,7 @@ delivery, broker and server modules:
 ```js
 import { PulpoDaemon } from "@liangai/pulpo-core";
 
-const daemon = new PulpoDaemon({ version: "0.1.0" });
+const daemon = new PulpoDaemon({ version: "0.1.1" });
 const addr = await daemon.start();
 ```
 

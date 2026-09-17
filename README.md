@@ -111,6 +111,15 @@ git submodule update --init
 
 ### 安装与构建
 
+只想在别的编排层里用 core？npm 上有现成的包，不必从源码构建：
+
+```bash
+npm i -g @liangai/pulpo-core        # daemon + pulpo-core CLI
+npm i -g @liangai/pulpo-companion   # 派活 MCP 服务器（一般由 core 自己拉起）
+```
+
+跑壳本身还是要克隆仓库：
+
 ```bash
 pnpm install
 pnpm -r build
@@ -122,7 +131,7 @@ pnpm -r build
 
 ```bash
 ./packages/core/bin/pulpo-core
-# → pulpo-core 0.1.0 就绪 pid=<pid> socket=<…>/.pulpo/run/core.sock ws=27183
+# → pulpo-core 0.1.1 就绪 pid=<pid> socket=<…>/.pulpo/run/core.sock ws=27183
 ```
 
 daemon 同时开 unix socket（`$PULPO_HOME/run/core.sock`，默认 `~/.pulpo/run/core.sock`）
@@ -150,9 +159,9 @@ Rust 侧会保证本机有一个能连的 core——没有才拉一个，你自�
 ### 一条最短的成功路径
 
 1. **起 core**：`./packages/core/bin/pulpo-core` ——
-   看到一行 `pulpo-core 0.1.0 就绪 pid=… socket=… ws=27183`。
+   看到一行 `pulpo-core 0.1.1 就绪 pid=… socket=… ws=27183`。
 2. **跑壳并连上**：`pnpm --filter @pulpo/shell dev:web`，浏览器打开
-   `http://localhost:5173/?ws=27183` —— 左下角显示「本机 core 0.1.0」、连接点变绿；
+   `http://localhost:5173/?ws=27183` —— 左下角显示「本机 core 0.1.1」、连接点变绿；
    没有会话时中栏是「选个渠道开始」。
 3. **新建会话**：点「新建任务」（⌘N），填一个工作目录（桌面端弹原生目录对话框，
    浏览器端直接填绝对路径）——左栏出现一条新会话，core 同时把 ZCode 引擎拉起来
@@ -334,6 +343,16 @@ git submodule update --init
 
 ### Install and build
 
+Only need core as a library or daemon inside another orchestrator? The packages are on npm,
+no source build required:
+
+```bash
+npm i -g @liangai/pulpo-core        # the daemon + `pulpo-core` CLI
+npm i -g @liangai/pulpo-companion   # the delegation MCP server (normally launched by core)
+```
+
+Running the shell itself still needs a clone:
+
 ```bash
 pnpm install
 pnpm -r build
@@ -345,7 +364,7 @@ pnpm -r build
 
 ```bash
 ./packages/core/bin/pulpo-core
-# → pulpo-core 0.1.0 就绪 pid=<pid> socket=<…>/.pulpo/run/core.sock ws=27183
+# → pulpo-core 0.1.1 就绪 pid=<pid> socket=<…>/.pulpo/run/core.sock ws=27183
 ```
 
 The daemon opens both a unix socket (`$PULPO_HOME/run/core.sock`, default `~/.pulpo/run/core.sock`)
@@ -374,9 +393,9 @@ a daemon you started yourself.
 ### Shortest path to success
 
 1. **Start core**: `./packages/core/bin/pulpo-core` —
-   you should see the ready line `pulpo-core 0.1.0 就绪 pid=… socket=… ws=27183`.
+   you should see the ready line `pulpo-core 0.1.1 就绪 pid=… socket=… ws=27183`.
 2. **Run the shell and connect**: `pnpm --filter @pulpo/shell dev:web`, then open
-   `http://localhost:5173/?ws=27183` — the status bar reads "本机 core 0.1.0" and the connection
+   `http://localhost:5173/?ws=27183` — the status bar reads "本机 core 0.1.1" and the connection
    dot turns green; with no sessions, the center shows the empty state.
 3. **Create a session**: click "新建任务" (⌘N) and give a working directory (a native folder
    picker on desktop, an absolute path in the browser) — a session appears on the left and core

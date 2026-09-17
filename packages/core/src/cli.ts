@@ -1,7 +1,7 @@
 import { PulpoDaemon } from "./server/daemon.js";
 import { socketPath, wsPort } from "./paths.js";
 
-const VERSION = "0.1.0";
+const VERSION = "0.1.1";
 
 function usage(): string {
   return [
