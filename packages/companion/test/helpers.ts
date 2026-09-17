@@ -3,7 +3,7 @@ import net from "node:net";
 import path from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { PulpoDaemon } from "@pulpo/core";
+import { PulpoDaemon } from "@liangai/pulpo-core";
 
 /** 仓内的 ZCode adapter（0.7.0）。`PULPO_ZCODE_ACP` 可整条覆盖。 */
 export const ZCODE_ACP =

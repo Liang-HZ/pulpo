@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { PulpoDaemon } from "@pulpo/core";
+import type { PulpoDaemon } from "@liangai/pulpo-core";
 import {
   RpcClient,
   adapterLogs,

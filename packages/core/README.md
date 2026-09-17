@@ -1,4 +1,4 @@
-# @pulpo/core
+# @liangai/pulpo-core
 
 The orchestration daemon behind [pulpo](https://github.com/Liang-HZ/pulpo) — a desktop shell that
 brings several coding-agent channels (Qoder, WorkBuddy, WorkBuddy AI, Claude, Codex, opencode,
@@ -6,7 +6,7 @@ ZCode) under one interface. It only translates protocols: it never proxies a mod
 an API key, and never keeps a copy of a session (each agent's own store stays the single source of
 truth).
 
-`@pulpo/core` is the process that speaks **ACP** (Agent Client Protocol): it starts each channel's
+`@liangai/pulpo-core` is the process that speaks **ACP** (Agent Client Protocol): it starts each channel's
 agent, holds its sessions, reads capability descriptors from the agent's own handshake, keeps a thin
 session graph, reads transcripts through from native storage, picks a delivery tier for follow-up
 messages, and brokers one-level cross-channel delegation. Everything is exposed over a single
@@ -41,7 +41,7 @@ The daemon is also usable as a library — the package exports the kernel, descr
 delivery, broker and server modules:
 
 ```js
-import { PulpoDaemon } from "@pulpo/core";
+import { PulpoDaemon } from "@liangai/pulpo-core";
 
 const daemon = new PulpoDaemon({ version: "0.1.0" });
 const addr = await daemon.start();

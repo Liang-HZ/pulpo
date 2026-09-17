@@ -76,7 +76,7 @@ describe("传输层", () => {
         );
         s.on("data", (d) => {
           got += d.toString();
-          if (got.includes("@pulpo/core")) done(true);
+          if (got.includes("@liangai/pulpo-core")) done(true);
         });
         s.on("error", () => done(false));
         setTimeout(() => done(false), 3000);

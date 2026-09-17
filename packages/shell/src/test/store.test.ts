@@ -240,7 +240,7 @@ describe("store 与 core 的往来", () => {
     // 走完 boot 握手：subscribe → core/info → agent/list，之后才是 permission/pending
     for (const [method, result] of [
       ["subscribe", { subscribed: [] }],
-      ["core/info", { name: "@pulpo/core", version: "0.1.0" }],
+      ["core/info", { name: "@liangai/pulpo-core", version: "0.1.0" }],
       ["agent/list", []],
     ] as const) {
       await tick();

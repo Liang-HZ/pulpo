@@ -177,9 +177,9 @@ pnpm --filter @pulpo/shell e2e   # Playwright：真 daemon + 真 ZCode adapter �
 
 ```
 packages/
-  core/         @pulpo/core —— 编排 daemon：ACP 内核 / descriptor / 会话图 + 读取层 /
+  core/         @liangai/pulpo-core —— 编排 daemon：ACP 内核 / descriptor / 会话图 + 读取层 /
                 投递阶梯 / 派活 broker / 本地控制协议。契约：packages/core/PROTOCOL.md
-  companion/    @pulpo/companion —— 注入各 agent 会话的 stdio MCP 服务器：跨渠道派活
+  companion/    @liangai/pulpo-companion —— 注入各 agent 会话的 stdio MCP 服务器：跨渠道派活
                 四件套（delegate_to_agent / send_input / get_task / cancel_task）+ list_agents
   shell/        @pulpo/shell —— 桌面壳（Tauri 2 + React 19）：三栏 + composer + 右栏轨迹，
                 只走 core 的 127.0.0.1 WebSocket
@@ -403,10 +403,10 @@ quota**; the e2e suite uses a temporary `PULPO_HOME` and never touches `~/.pulpo
 
 ```
 packages/
-  core/         @pulpo/core — orchestration daemon: ACP kernel / descriptor / session graph +
+  core/         @liangai/pulpo-core — orchestration daemon: ACP kernel / descriptor / session graph +
                 read-through layer / delivery ladder / delegation broker / local control protocol.
                 Contract: packages/core/PROTOCOL.md
-  companion/    @pulpo/companion — stdio MCP server injected into each agent session: the
+  companion/    @liangai/pulpo-companion — stdio MCP server injected into each agent session: the
                 delegation toolset (delegate_to_agent / send_input / get_task / cancel_task)
                 plus list_agents
   shell/        @pulpo/shell — desktop shell (Tauri 2 + React 19): three columns + composer +

@@ -1,4 +1,4 @@
-# @pulpo/companion — 跨渠道派活的 MCP 伴生
+# @liangai/pulpo-companion — 跨渠道派活的 MCP 伴生
 
 一个 **stdio MCP 服务器**。core 在开会话时把它注入进各渠道 agent 的会话里，于是那个 agent
 多出五个工具：看有哪些渠道、把子任务派给别的渠道、给派出去的任务补话、查结论、撤销。
@@ -86,7 +86,7 @@ core 侧的开关是 `PULPO_COMPANION=off`（关掉注入）与 `PULPO_COMPANION
 ## 测试
 
 ```bash
-pnpm --filter @pulpo/companion test
+pnpm --filter @liangai/pulpo-companion test
 ```
 
 - 单元（20 条）：工具清单与 schema、参数校验、身份解析（`PULPO_SESSION_REF` / 令牌 / human）、

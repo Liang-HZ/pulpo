@@ -5,7 +5,7 @@ import { packagesRoot, socketPath as defaultSocketPath } from "../paths.js";
 /**
  * companion 注入。
  *
- * core 在 `session/new` 时把 `@pulpo/companion` 作为 stdio MCP server 塞进目标
+ * core 在 `session/new` 时把 `@liangai/pulpo-companion` 作为 stdio MCP server 塞进目标
  * agent 的会话里，agent 于是拿到跨渠道派活的四件套。注入是**默认开**的，
  * `PULPO_COMPANION=off` 关掉。
  *

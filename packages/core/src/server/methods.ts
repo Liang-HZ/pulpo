@@ -76,7 +76,7 @@ export function buildRouter(deps: MethodDeps): MethodRouter {
 
   // ── 基础 ──────────────────────────────────────────────────────────
   r.register("core/info", () => ({
-    name: "@pulpo/core",
+    name: "@liangai/pulpo-core",
     version: deps.version,
     protocol: 1,
     pid: process.pid,

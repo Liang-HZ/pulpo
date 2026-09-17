@@ -1,5 +1,5 @@
 {
-  "name": "@pulpo/companion",
+  "name": "@liangai/pulpo-companion",
   "version": "0.1.0",
   "type": "module",
   "description": "pulpo companion — stdio MCP server injected into agent sessions, exposing cross-channel delegation (delegate_to_agent / send_input / get_task / cancel_task) and list_agents.",
@@ -55,7 +55,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@pulpo/core": "workspace:*",
+    "@liangai/pulpo-core": "workspace:*",
     "@types/node": "^22.13.1",
     "@types/ws": "^8.5.14",
     "typescript": "^5.7.3",

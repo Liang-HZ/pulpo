@@ -1,6 +1,6 @@
 # @pulpo/shell
 
-pulpo 的桌面壳。它是 [`@pulpo/core`](../core/PROTOCOL.md) 的一个客户端，**只走 core 的
+pulpo 的桌面壳。它是 [`@liangai/pulpo-core`](../core/PROTOCOL.md) 的一个客户端，**只走 core 的
 127.0.0.1 WebSocket（JSON-RPC）**——没有第二种传输，也没有任何桌面独占的数据通路。
 Tauri IPC 只用于三件本机特权动作：选目录、在文件管理器里打开目录、读本机 git 状态。
 

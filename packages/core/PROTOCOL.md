@@ -71,7 +71,7 @@ pulpo-core --help
 **成功**
 
 ```json
-{"jsonrpc":"2.0","id":1,"result":{"name":"@pulpo/core","version":"0.1.0"}}
+{"jsonrpc":"2.0","id":1,"result":{"name":"@liangai/pulpo-core","version":"0.1.0"}}
 ```
 
 **失败**
@@ -155,7 +155,7 @@ unsubscribe
 返回：
 ```json
 {
-  "name": "@pulpo/core", "version": "0.1.0", "protocol": 1, "pid": 23076,
+  "name": "@liangai/pulpo-core", "version": "0.1.0", "protocol": 1, "pid": 23076,
   "transports": { "socketPath": "/Users/x/.pulpo/run/core.sock", "wsPort": 27183 },
   "topics": ["session/update","task/update","permission/requested","elicitation/requested","agent/exit"]
 }
@@ -315,7 +315,7 @@ core 从不硬编码任何能力，缓存里存的只有 agent 自己的自描�
 #### `session/new`
 参数 `{ "agentId": string, "cwd": string(绝对路径), "mcpServers"?: object[] }`。
 
-> **companion 注入**：core 会在你给的 `mcpServers` 后面**追加一条** `@pulpo/companion`
+> **companion 注入**：core 会在你给的 `mcpServers` 后面**追加一条** `@liangai/pulpo-companion`
 > （stdio，`name: "pulpo"`），于是这条会话里的 agent 拿到跨渠道派活的四件套。
 > `PULPO_COMPANION=off` 关掉；companion 没构建过（`dist/cli.js` 不在）时也不注入——
 > 少一个工具好过让 agent 去启一个必崩的 MCP server。`task/delegate` 建出来的目标会话

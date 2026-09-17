@@ -75,7 +75,7 @@ export function packageRoot(): string {
     if (parent === dir) break;
     dir = parent;
   }
-  throw new Error("找不到 @pulpo/core 的包根目录（向上 10 层都没有 package.json）");
+  throw new Error("找不到 @liangai/pulpo-core 的包根目录（向上 10 层都没有 package.json）");
 }
 
 /** 仓库里 `packages/` 目录。 */

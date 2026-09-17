@@ -1,5 +1,5 @@
 {
-  "name": "@pulpo/core",
+  "name": "@liangai/pulpo-core",
   "version": "0.1.0",
   "type": "module",
   "description": "pulpo core daemon — ACP kernel, capability descriptors, session graph, read-through layer, delivery ladder and delegation broker for multi-channel coding agents.",

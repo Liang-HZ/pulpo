@@ -30,7 +30,7 @@ importers:
         specifier: ^3.25.76
         version: 3.25.76
     devDependencies:
-      '@pulpo/core':
+      '@liangai/pulpo-core':
         specifier: workspace:*
         version: link:../core
       '@types/node':
