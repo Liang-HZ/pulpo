@@ -1,7 +1,7 @@
 import { EventEmitter } from "node:events";
 import fs from "node:fs";
 import path from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it } from "vitest";
 import { DelegationBroker, readUsage } from "../../src/broker/delegate.js";
 import { HUMAN_NODE, SessionGraph } from "../../src/graph/sessionGraph.js";
 import { descriptorFromInitialize } from "../../src/descriptor/build.js";
@@ -77,6 +77,10 @@ beforeEach(() => {
 
 afterEach(() => {
   /* 每个用例一套独立目录，ROOT 最后统一清 */
+});
+
+afterAll(() => {
+  fs.rmSync(ROOT, { recursive: true, force: true });
 });
 
 describe("人从壳里派活也要进会话图", () => {
