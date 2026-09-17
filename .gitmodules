@@ -1,0 +1,3 @@
+[submodule "packages/adapters/zcode"]
+	path = packages/adapters/zcode
+	url = https://github.com/Liang-HZ/zcode-acp

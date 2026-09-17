@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "壳只需要两样本机权限：选目录（dialog）与在文件管理器里打开目录（opener）。没有 fs 权限——会话内容一律由 core 读穿，前端不碰文件系统。",
+  "windows": ["main"],
+  "permissions": ["core:default", "dialog:allow-open", "opener:allow-reveal-item-in-dir"]
+}

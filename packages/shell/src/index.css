@@ -1,0 +1,375 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────────────────
+    @theme 清单。
+   默认档位全部清空（`*: initial`）——标度外的数值连类名都不存在：写 p-5、
+   text-4xl、rounded-2xl 会直接编译不出样式。
+   ────────────────────────────────────────────────────────────────────────── */
+@theme {
+  --color-*: initial;
+  --spacing-*: initial;
+  --radius-*: initial;
+  --text-*: initial;
+  --shadow-*: initial;
+  --font-*: initial;
+  --leading-*: initial;
+  --tracking-*: initial;
+
+  /* ---- 字体 ---- */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei UI",
+    "Noto Sans CJK SC", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "PingFang SC",
+    "Microsoft YaHei", "Noto Sans Mono CJK SC", monospace;
+
+  /* ---- 间距 ---- */
+  --spacing-0: 0px;
+  --spacing-px: 1px;
+  --spacing-0\.5: 2px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+  /* 两个组件尺寸是写死的具体值（会话行 26、回到底部按钮 36），
+     与七档间距并存；命名成 row/jump 而不是数字，避免被当成新的间距档位。 */
+  --spacing-row: 26px;
+  --spacing-jump: 36px;
+
+  /* ---- 字号 / 行高（乘 --ui-scale） ---- */
+  --text-caption: calc(12px * var(--ui-scale));
+  --text-caption--line-height: 1.5;
+  --text-ui: calc(14px * var(--ui-scale));
+  --text-ui--line-height: 1.5;
+  --text-body: calc(14px * var(--ui-scale));
+  --text-body--line-height: 1.65;
+  --text-body-lg: calc(16px * var(--ui-scale));
+  --text-body-lg--line-height: 1.65;
+  --text-h2: calc(16px * var(--ui-scale));
+  --text-h2--line-height: 1.25;
+  --text-h2--letter-spacing: -0.01em;
+  --text-h1: calc(20px * var(--ui-scale));
+  --text-h1--line-height: 1.15;
+  --text-h1--letter-spacing: -0.02em;
+  --text-display: calc(25px * var(--ui-scale));
+  --text-display--line-height: 1.15;
+  --text-display--letter-spacing: -0.03em;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* ---- 圆角 ---- */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* ---- 阴影 ---- */
+  --shadow-popover: 0 6px 24px 0 rgb(0 0 0 / 0.06), 0 4px 6px 0 rgb(0 0 0 / 0.04);
+  --shadow-dialog: 0 16px 48px 0 rgb(0 0 0 / 0.12), 0 4px 12px 0 rgb(0 0 0 / 0.06);
+
+  /* ---- 语义色：指向下面的主题变量（三层 token） ---- */
+  --color-chrome: var(--c-chrome);
+  --color-canvas: var(--c-canvas);
+  --color-surface: var(--c-surface);
+  --color-hover: var(--c-hover);
+  --color-selected: var(--c-selected);
+  --color-fg: var(--c-fg-1);
+  --color-fg-muted: var(--c-fg-2);
+  --color-fg-subtle: var(--c-fg-3);
+  --color-border: var(--c-border);
+  --color-control: var(--c-control);
+  --color-brand: var(--c-brand);
+  --color-brand-surface: var(--c-brand-surface);
+  --color-brand-fg: var(--c-brand-fg);
+  --color-success: var(--c-success);
+  --color-warning: var(--c-warning);
+  --color-warning-surface: var(--c-warning-surface);
+  --color-danger: var(--c-danger);
+  --color-diff-add: var(--c-diff-add);
+  --color-diff-add-surface: var(--c-diff-add-surface);
+  --color-diff-remove: var(--c-diff-remove);
+  --color-diff-remove-surface: var(--c-diff-remove-surface);
+  --color-bubble: var(--c-bubble);
+  --color-bubble-fg: var(--c-bubble-fg);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* ---- 布局常量 ---- */
+  --layout-sidebar: 288px;
+  --layout-sidebar-min: 200px;
+  --layout-sidebar-max: 420px;
+  --layout-column: 768px;
+  --layout-column-min: 560px;
+  --layout-inspector: 320px;
+  --layout-inspector-min: 240px;
+  --layout-inspector-max: 560px;
+  --layout-titlebar: 48px;
+  --layout-statusbar: 28px;
+  --layout-composer-min: 128px;
+  --layout-composer-max: 360px;
+  --layout-output-max: 320px;
+  --layout-plan-max: 288px;
+  --layout-card-max: 360px;
+  --layout-taskout-max: 200px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- 亮色 ---- */
+:root {
+  --ui-scale: 1;
+  color-scheme: light;
+  --c-chrome: #eff3f3;
+  --c-canvas: #fafcfc;
+  --c-surface: #fdfefe;
+  --c-hover: rgb(10 10 10 / 0.06);
+  --c-selected: rgb(10 10 10 / 0.1);
+  --c-fg-1: #16201f;
+  --c-fg-2: #4c5a59;
+  --c-fg-3: #63706f;
+  --c-border: #dce3e3;
+  --c-control: #7a8888;
+  --c-brand: #0c6a72;
+  --c-brand-surface: #e3f0f1;
+  --c-brand-fg: #ffffff;
+  --c-success: #1a7248;
+  --c-warning: #a84c08;
+  --c-warning-surface: #fbf0e4;
+  --c-danger: #b4322f;
+  --c-diff-add: #0f7048;
+  --c-diff-add-surface: #e6f4ec;
+  --c-diff-remove: #b4322f;
+  --c-diff-remove-surface: #faeae9;
+  --c-bubble: #22302f;
+  --c-bubble-fg: #f2f6f6;
+}
+
+/* 暗色不是反转：层级靠背景提亮（chrome 最暗 → surface 最亮），暗色一律不用阴影。
+   实心 brand 按钮在暗色下用近黑字（白字压 #2FB3B8 只有 2.54，不合格）。 */
+.dark {
+  color-scheme: dark;
+  --c-chrome: #14191a;
+  --c-canvas: #191f20;
+  --c-surface: #202829;
+  --c-hover: rgb(255 255 255 / 0.08);
+  --c-selected: rgb(255 255 255 / 0.12);
+  --c-fg-1: #e3eaea;
+  --c-fg-2: #a8b5b5;
+  --c-fg-3: #7e8c8c;
+  --c-border: #2e393a;
+  --c-control: #738384;
+  --c-brand: #2fb3b8;
+  --c-brand-surface: #10312f;
+  --c-brand-fg: #0a1516;
+  --c-success: #4bbe83;
+  --c-warning: #e8913f;
+  --c-warning-surface: #2a1f12;
+  --c-danger: #f0716c;
+  --c-diff-add: #58c98c;
+  --c-diff-add-surface: #16281f;
+  --c-diff-remove: #f0716c;
+  --c-diff-remove-surface: #2a1a1a;
+  --c-bubble: #2b3839;
+  --c-bubble-fg: #edf2f2;
+}
+
+/* 跟随系统：没被 .light / .dark 显式钉住时按系统偏好走 */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+    --c-chrome: #14191a;
+    --c-canvas: #191f20;
+    --c-surface: #202829;
+    --c-hover: rgb(255 255 255 / 0.08);
+    --c-selected: rgb(255 255 255 / 0.12);
+    --c-fg-1: #e3eaea;
+    --c-fg-2: #a8b5b5;
+    --c-fg-3: #7e8c8c;
+    --c-border: #2e393a;
+    --c-control: #738384;
+    --c-brand: #2fb3b8;
+    --c-brand-surface: #10312f;
+    --c-brand-fg: #0a1516;
+    --c-success: #4bbe83;
+    --c-warning: #e8913f;
+    --c-warning-surface: #2a1f12;
+    --c-danger: #f0716c;
+    --c-diff-add: #58c98c;
+    --c-diff-add-surface: #16281f;
+    --c-diff-remove: #f0716c;
+    --c-diff-remove-surface: #2a1a1a;
+    --c-bubble: #2b3839;
+    --c-bubble-fg: #edf2f2;
+  }
+}
+
+/* `dark:` 变体跟 token 走同一条判定，不各写一套 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--c-canvas);
+    color: var(--c-fg-1);
+    font-family: var(--font-sans);
+    font-size: var(--text-ui);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* 焦点环全站一条规则。不用 focus:ring——ring 是 box-shadow，
+     会被 overflow-hidden 的父容器裁掉，工具卡里就看不见。 */
+  :where(button, a, input, textarea, select, [role="button"], [tabindex]):focus-visible {
+    outline: 2px solid var(--c-brand);
+    outline-offset: 2px;
+    border-radius: inherit;
+  }
+
+  ::selection {
+    background: var(--c-brand-surface);
+    color: var(--c-fg-1);
+  }
+}
+
+/* ---- 动效 ---- */
+@keyframes pulpo-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.85);
+  }
+}
+
+@keyframes pulpo-shimmer {
+  0% {
+    background-position: 200% 50%;
+  }
+  100% {
+    background-position: -200% 50%;
+  }
+}
+
+@keyframes pulpo-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulpo-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.breathe {
+  animation: pulpo-breathe 1.2s var(--ease-out) infinite;
+}
+
+/* 运行中的标签：流光扫过，2s 循环 */
+.shimmer {
+  background-image: linear-gradient(
+    90deg,
+    var(--c-fg-3) 0%,
+    var(--c-fg-3) 35%,
+    var(--c-brand) 50%,
+    var(--c-fg-3) 65%,
+    var(--c-fg-3) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: pulpo-shimmer 2s linear infinite;
+}
+
+.spin {
+  animation: pulpo-spin 0.8s linear infinite;
+}
+
+.fade-in {
+  animation: pulpo-fade-in 150ms var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+  .shimmer {
+    background-image: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    color: var(--c-brand);
+  }
+}
+
+/* ---- 消息动作行：纯 CSS，不进 React state ---- */
+[data-reveal] {
+  opacity: var(--actions-opacity, 0);
+  transition-property: opacity;
+  transition-duration: 60ms; /* 隐藏比出现快一倍 */
+  transition-timing-function: var(--ease-out);
+}
+.group\/message:hover [data-reveal] {
+  --actions-opacity: 1;
+  transition-delay: 100ms; /* 扫过不闪 */
+  transition-duration: 120ms;
+}
+.group\/message:focus-within [data-reveal] {
+  --actions-opacity: 1;
+  transition-delay: 0s;
+}
+[data-reveal]:has([data-popup-open]) {
+  --actions-opacity: 1;
+  transition-delay: 0s;
+}
+@media (pointer: coarse), (hover: none) {
+  [data-reveal] {
+    --actions-opacity: 1;
+    transition-property: none;
+  }
+}
+
+/* ---- 滚动条：4px，不抢戏 ---- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-control) transparent;
+}
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--c-control);
+  border-radius: var(--radius-sm);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

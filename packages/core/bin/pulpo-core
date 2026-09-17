@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+import { main } from "../dist/cli.js";
+
+main().catch((err) => {
+  process.stderr.write(`pulpo-core 启动失败：${err?.message ?? err}\n`);
+  process.exit(1);
+});

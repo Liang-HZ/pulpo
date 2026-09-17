@@ -1,0 +1,47 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+dist/
+build/
+dist-web/
+*.log
+.npmrc.local
+
+# Playwright
+test-results/
+playwright-report/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.benchmarks/
+
+# Rust / Tauri
+target/
+packages/shell/src-tauri/target/
+# tauri-build 生成的 ACL schema
+packages/shell/src-tauri/gen/schemas/
+
+# 打进 .app 的运行时目录（由 scripts/bundle-runtime.mjs 生成）
+packages/shell/src-tauri/runtime/
+
+# 本工作区的 agent 记忆（不属于源码）
+.workbuddy-ai/
+
+# 私有文档（不公开；配套动作：git rm --cached PLAN.md docs/DESIGN.md）
+PLAN.md
+docs/DESIGN.md
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# pulpo
+.pulpo/
+*.tsbuildinfo

@@ -1,0 +1,5 @@
+packages:
+  - 'packages/*'
+  # packages/adapters/* 里只有 TypeScript 包算 workspace 成员；
+  # Python adapter（zcode）不含 package.json，pnpm 自动跳过。
+  - 'packages/adapters/*'

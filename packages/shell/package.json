@@ -1,0 +1,39 @@
+{
+  "name": "@pulpo/shell",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "pulpo shell — 桌面壳（Tauri 2 + React 19），只走 core 的 127.0.0.1 WebSocket",
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "vite",
+    "dev:web": "vite --mode web",
+    "build": "vite build",
+    "build:web": "vite build --mode web",
+    "preview:web": "vite preview --mode web --outDir dist-web",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "e2e": "playwright test",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.9.0",
+    "@tauri-apps/plugin-dialog": "^2.4.0",
+    "@tauri-apps/plugin-opener": "^2.5.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@tailwindcss/vite": "^4.1.13",
+    "@tauri-apps/cli": "^2.9.0",
+    "@types/node": "^22.13.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.7.3",
+    "vite": "^7.1.0",
+    "vitest": "^3.0.5"
+  }
+}
